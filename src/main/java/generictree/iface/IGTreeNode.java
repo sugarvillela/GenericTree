@@ -13,12 +13,25 @@ public interface IGTreeNode <T> {
     void setLevel(int level);
     int level(int level);
 
+    void setParent(IGTreeNode <T> parent);
+    IGTreeNode<T> parent();
+
+    void setOp(char op);
+    char op();
+
+    void setNegated(boolean negated);
+    boolean negated();
+
     boolean isLeaf();
     ArrayList<IGTreeNode <T>> getChildren();
 
     void addChild(IGTreeNode <T> child);
 
-    void addChild(String identifier, T payload);// makes impl type independent of interface
+    void addChild(String identifier, T payload);// add child of same subtype
+
+    void addChild(String identifier, char op, T payload);
+
+    String friendlyString();
 
     String csvString();
 }

@@ -11,8 +11,8 @@ import java.util.ArrayList;
 class GTreeTest {
 
     @Test
-    void add() {
-        IGTree<String> tree = new GTree<>('-');
+    void pathTree() {
+        IGTree<String> tree = new PathTree<>('-');
         tree.put("id0", "payload0");
         tree.put("id0-id01", "payload1");
         tree.put("id0-id01-id02", "payload2");
@@ -42,8 +42,17 @@ class GTreeTest {
             System.out.println("found: " + found.csvString());
         }
         else{
-            System.out.println("======");
+            System.out.println("nope");
         }
-
+    }
+    @Test
+    void splitTree() {
+        IGTree<String> tree = new SplitTree<>();
+        tree.put("zero|!(one&!two)|three");
+        tree.getRoot().csvString();
+        ArrayList<IGTreeNode<String>> depthFirst = tree.getParse().toListDepthFirst(tree.getRoot(), null);
+        for(IGTreeNode<String> node : depthFirst){
+            System.out.println(node.friendlyString());
+        }
     }
 }

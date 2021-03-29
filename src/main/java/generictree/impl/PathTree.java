@@ -1,5 +1,7 @@
 package generictree.impl;
 
+import generictree.node.ParseTreeNode;
+
 /** For cases where the path to an element is known.
  *  Path is a 'splitChar' separated string that corresponds to
  *  the node identifiers on the path to the element (see tests)
@@ -15,7 +17,7 @@ public class PathTree <T> extends GTreeBase <T> {
     @Override
     public boolean put(String path, T payload) {
         if(root == null){
-            root = new GTreeNode<>();
+            root = new ParseTreeNode<>();
             root.setLevel(0);
             root.setIdentifier(path);
             root.setPayload(payload);

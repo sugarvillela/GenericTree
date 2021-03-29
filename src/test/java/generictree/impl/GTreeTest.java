@@ -37,21 +37,17 @@ class GTreeTest {
         for(IGTreeNode<String> node : leaves){
             System.out.println(node.csvString());
         }
-//
-//        System.out.println("======");
-//        IGTreeTask<String> task = new TreeTaskDisp<>();
-//        tree.getParse().preOrder(tree.getRoot(), task);
-//
-//        System.out.println("======");
-//        IGTreeNode<String> found;
-//        if((found = tree.getParse().findById(tree.getRoot(), "id_c1")) != null){
-//            System.out.println("found: " + found.csvString());
-//        }
-//        else{
-//            System.out.println("nope");
-//        }
+
+        System.out.println("======");
+        IGTreeNode<String> found;
+        if((found = tree.getParse().findById(tree.getRoot(), "id_c1")) != null){
+            System.out.println("found: " + found.csvString());
+        }
+        else{
+            System.out.println("nope");
+        }
     }
-    private IGTree<String> mockTree(){
+    private IGTree<String> mockPathTree(){
         IGTree<String> tree = new PathTree<>('-');
         tree.put("id0", "payload0");
         tree.put("id0-id01", "payload1");
@@ -66,13 +62,13 @@ class GTreeTest {
     }
     @Test
     void breadthFirst() {
-        IGTree<String> tree = mockTree();
+        IGTree<String> tree = mockPathTree();
         IGTreeTask<String> task = new TaskDisp<>();
         tree.getParse().breadthFirst(tree.getRoot(), task);
     }
     @Test
     void findByPath() {
-        IGTree<String> tree = mockTree();
+        IGTree<String> tree = mockPathTree();
         IGTreeNode<String> found = tree.getParse().findByPartialPath(0, tree.getRoot(), "id01", "id02", "id03");
         String friendlyString = (found == null)? "null" : found.friendlyString();
         System.out.println("friendlyString: " + friendlyString);
@@ -87,7 +83,7 @@ class GTreeTest {
     }
     @Test
     void fullPath() {
-        IGTree<String> tree = mockTree();
+        IGTree<String> tree = mockPathTree();
         String[] path  = tree.getParse().getFullPath(tree.getRoot(), "id02", "id03");
         String pathString = (path == null)? "null" : String.join(", ", path);
         System.out.println("pathString: " + pathString);
@@ -102,7 +98,7 @@ class GTreeTest {
     }
     @Test
     void splitTree() {
-        IGTree<String> tree = new SplitTree<>();
+        IGTree<String> tree = new ParseTree<>();
         tree.put("zero|!(one&!two)|three");
         tree.getRoot().csvString();
         ArrayList<IGTreeNode<String>> list = new ArrayList<>();
@@ -110,5 +106,21 @@ class GTreeTest {
         for(IGTreeNode<String> node : list){
             System.out.println(node.friendlyString());
         }
+    }
+    private IGTree<String> mockParseTree(){
+        IGTree<String> tree = new ParseTree<>();
+        tree.put("zero|!(one&two)|!three");
+        // display?
+        ArrayList<IGTreeNode<String>> list = new ArrayList<>();
+        tree.getParse().preOrder(tree.getRoot(), new TaskToList<>(list));
+        for(IGTreeNode<String> node : list){
+            System.out.println(node.friendlyString());
+        }
+        return tree;
+    }
+    @Test
+    void unParse() {
+        IGTree<String> tree = mockParseTree();
+        System.out.println(tree.toString());
     }
 }

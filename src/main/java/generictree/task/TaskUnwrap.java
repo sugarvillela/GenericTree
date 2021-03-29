@@ -37,6 +37,7 @@ public class TaskUnwrap<T> implements IGTreeTask<T> {
         String identifier = node.identifier();
         if(!identifier.isEmpty() && this.isWrapped(identifier)){
             node.setIdentifier(identifier.substring(1, identifier.length() - 1));
+            node.setWrapped(true);
             return true;
         }
         return false;

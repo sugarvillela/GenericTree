@@ -1,4 +1,4 @@
-package generictree.impl;
+package generictree.parse;
 
 import generictree.iface.IGTreeNode;
 import generictree.iface.IGTreeParse;
@@ -90,7 +90,7 @@ public class GTreeParse<T> implements IGTreeParse<T> {
     public boolean postOrder(IGTreeNode<T> root, IGTreeTask<T> task) {
         boolean result = false;
         for(IGTreeNode<T> child : root.getChildren()){
-            result |= preOrder(child, task);
+            result |= postOrder(child, task);
         }
         result |= task.doTask(root);
         return result;

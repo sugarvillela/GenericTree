@@ -16,20 +16,22 @@ public interface IGTreeNode <T> {
     void setParent(IGTreeNode <T> parent);
     IGTreeNode<T> parent();
 
-    void setOp(char op);
-    char op();
-
-    void setNegated(boolean negated);
-    boolean negated();
-
     boolean isLeaf();
+
     ArrayList<IGTreeNode <T>> getChildren();
 
     void addChild(IGTreeNode <T> child);
 
     void addChild(String identifier, T payload);// add child of same subtype
 
-    void addChild(String identifier, char op, T payload);
+    void setOp(char op);
+    char op();
+
+    void setNegated(boolean negated);
+    boolean negated();
+
+    void setWrapped(boolean wrapped);
+    boolean wrapped();
 
     String friendlyString();
 

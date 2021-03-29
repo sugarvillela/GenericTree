@@ -3,6 +3,7 @@ package generictree.impl;
 import generictree.iface.IGTree;
 import generictree.iface.IGTreeNode;
 import generictree.iface.IGTreeParse;
+import generictree.parse.GTreeParse;
 
 public abstract class GTreeBase <T> implements IGTree<T> {
     protected final IGTreeParse<T> parseObject;

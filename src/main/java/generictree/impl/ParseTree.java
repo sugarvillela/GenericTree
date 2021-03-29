@@ -4,15 +4,18 @@ import generictree.iface.IGTreeNode;
 import generictree.iface.IGTreeTask;
 import generictree.task.TaskNegate;
 import generictree.task.TaskUnwrap;
+import generictree.node.ParseTreeNode;
 import tokenizer.iface.ITokenizer;
 import tokenizer.impl.Tokenizer;
+
+import java.util.ArrayList;
 
 /** For cases where a delimiter-separated string will be split
  *  into a tree, e.g. a&b&!(b|c)
  *
  * @param <T> the IGTreeNode payload type
  */
-public class SplitTree <T> extends GTreeBase <T> {
+public class ParseTree<T> extends GTreeBase <T> {
     private static final char AND = '&';
     private static final char OR = '|';
     private static final char NEGATE_SYMBOL = '!';
@@ -23,7 +26,7 @@ public class SplitTree <T> extends GTreeBase <T> {
     private final IGTreeTask<T> taskNegate;
     private final IGTreeTask<T> taskUnwrap;
 
-    public SplitTree() {
+    public ParseTree() {
         taskNegate = new TaskNegate<>(NEGATE_SYMBOL);
         taskUnwrap = new TaskUnwrap<>(WRAP_SYMBOL_OPEN, WRAP_SYMBOL_CLOSE);
         tokenizer = Tokenizer.builder().skipSymbols(WRAP_SYMBOL_OPEN +"'").keepSkipSymbol().build();
@@ -31,7 +34,7 @@ public class SplitTree <T> extends GTreeBase <T> {
 
     @Override
     public boolean put(String path, T payload) {
-        root = new GTreeNode<>();
+        root = new ParseTreeNode<>();
         root.setLevel(0);
         root.setIdentifier(path);
         root.setPayload(payload);
@@ -73,5 +76,27 @@ public class SplitTree <T> extends GTreeBase <T> {
             return more;
         }
         return false;
+    }
+
+    @Override
+    public String toString(){
+        return unParse(root);
+    }
+    private String unParse(IGTreeNode<T> currNode){
+        String format = currNode.wrapped()? "%s(%s)" : "%s%s";
+        String negateSymbol = currNode.negated()? String.valueOf(NEGATE_SYMBOL) : "";
+
+        if(currNode.isLeaf()){
+            return String.format(format, negateSymbol, currNode.identifier());
+        }
+        else{
+            String op = String.format(" %c%c ", currNode.op(), currNode.op());
+            ArrayList<String> childrenToList = new ArrayList<>();
+            for(IGTreeNode<T> child : currNode.getChildren()){
+                childrenToList.add(unParse(child));
+            }
+
+            return String.format(format, negateSymbol, String.join(op, childrenToList));
+        }
     }
 }

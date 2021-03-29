@@ -1,7 +1,10 @@
 package generictree.impl;
 
-import generictree.iface.IGTreeNode;
-
+/** For cases where the path to an element is known.
+ *  Path is a 'splitChar' separated string that corresponds to
+ *  the node identifiers on the path to the element (see tests)
+ * @param <T> the IGTreeNode payload type
+ */
 public class PathTree <T> extends GTreeBase <T> {
     private final String splitChar;
 
@@ -19,8 +22,8 @@ public class PathTree <T> extends GTreeBase <T> {
             return true;
         }
         else{
-            String[] tok = path.split(splitChar);
-            return parseObject.put(payload, 0, root, tok);
+            String[] tok = path.split("[" + splitChar + "]");
+            return parseObject.putByPath(payload, 0, root, tok);
         }
     }
 }

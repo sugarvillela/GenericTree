@@ -4,10 +4,10 @@ import generictree.iface.IGTreeNode;
 import generictree.iface.IGTreeTask;
 
 
-public class TreeTaskUnwrap<T> implements IGTreeTask<T> {
+public class TaskUnwrap<T> implements IGTreeTask<T> {
     private final char first, last;
 
-    public TreeTaskUnwrap(char first, char last) {
+    public TaskUnwrap(char first, char last) {
         this.first = first;
         this.last = last;
     }

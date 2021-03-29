@@ -11,7 +11,7 @@ public interface IGTreeNode <T> {
     T getPayload();
 
     void setLevel(int level);
-    int level(int level);
+    int level();
 
     void setParent(IGTreeNode <T> parent);
     IGTreeNode<T> parent();

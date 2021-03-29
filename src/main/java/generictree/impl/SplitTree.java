@@ -1,17 +1,17 @@
 package generictree.impl;
 
-import generictree.iface.IGTree;
 import generictree.iface.IGTreeNode;
-import generictree.iface.IGTreeParse;
 import generictree.iface.IGTreeTask;
-import generictree.task.TreeTaskDisp;
-import generictree.task.TreeTaskNegate;
-import generictree.task.TreeTaskUnwrap;
+import generictree.task.TaskNegate;
+import generictree.task.TaskUnwrap;
 import tokenizer.iface.ITokenizer;
 import tokenizer.impl.Tokenizer;
 
-import java.util.ArrayList;
-
+/** For cases where a delimiter-separated string will be split
+ *  into a tree, e.g. a&b&!(b|c)
+ *
+ * @param <T> the IGTreeNode payload type
+ */
 public class SplitTree <T> extends GTreeBase <T> {
     private static final char AND = '&';
     private static final char OR = '|';
@@ -24,8 +24,8 @@ public class SplitTree <T> extends GTreeBase <T> {
     private final IGTreeTask<T> taskUnwrap;
 
     public SplitTree() {
-        taskNegate = new TreeTaskNegate<>(NEGATE_SYMBOL);
-        taskUnwrap = new TreeTaskUnwrap<>(WRAP_SYMBOL_OPEN, WRAP_SYMBOL_CLOSE);
+        taskNegate = new TaskNegate<>(NEGATE_SYMBOL);
+        taskUnwrap = new TaskUnwrap<>(WRAP_SYMBOL_OPEN, WRAP_SYMBOL_CLOSE);
         tokenizer = Tokenizer.builder().skipSymbols(WRAP_SYMBOL_OPEN +"'").keepSkipSymbol().build();
     }
 
@@ -52,7 +52,6 @@ public class SplitTree <T> extends GTreeBase <T> {
         return false;
     }
     private boolean split(IGTreeNode<T> currNode, char delim) {
-        //System.out.println("currNode: " + currNode.csvString());
         if(currNode.isLeaf()){
             String identifier = currNode.identifier();
             String[] tokens = tokenizer.parse(identifier).getArray();
@@ -75,15 +74,4 @@ public class SplitTree <T> extends GTreeBase <T> {
         }
         return false;
     }
-    /*
-        boolean more;
-        do{
-            more = root.split(AND);
-            more |= root.split(OR);
-            more |= root.negate();
-            more |= root.unwrap(OPAR.asChar, CPAR.asChar);
-            more |= root.unquote(SQUOTE.asChar);
-        }
-        while(more);
-    * */
 }

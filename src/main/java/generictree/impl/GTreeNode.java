@@ -59,7 +59,7 @@ public class GTreeNode<T> implements IGTreeNode<T> {
     }
 
     @Override
-    public int level(int level) {
+    public int level() {
         return level;
     }
 

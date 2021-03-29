@@ -1,16 +1,22 @@
 package generictree.iface;
 
-import java.util.ArrayList;
-
 public interface IGTreeParse <T> {
-    IGTreeNode<T> find(IGTreeNode<T> root, String identifier);
+    IGTreeNode<T> findById(IGTreeNode<T> root, String identifier);
 
-    boolean put(T payload, int level, IGTreeNode<T> root, String... path);
+    /*====PathTree algorithms=========================================================================================*/
 
-    ArrayList<IGTreeNode<T>> toListDepthFirst(IGTreeNode<T> root, ArrayList<IGTreeNode<T>> list);
-    ArrayList<IGTreeNode<T>> toListLeaves(IGTreeNode<T> root, ArrayList<IGTreeNode<T>> list);
+    IGTreeNode<T> findByPartialPath(int index, IGTreeNode<T> root, String... partialPath);
 
-    boolean preOrder(IGTreeNode<T> root, IGTreeTask task);
-    boolean postOrder(IGTreeNode<T> root, IGTreeTask task);
+    String[] getFullPath(IGTreeNode<T> root, String... partialPath);
+
+    boolean putByPath(T payload, int level, IGTreeNode<T> root, String... path);
+
+    /*====General tree parse algorithms===============================================================================*/
+
+    boolean preOrder(IGTreeNode<T> root, IGTreeTask<T> task);
+
+    boolean postOrder(IGTreeNode<T> root, IGTreeTask<T> task);
+
+    boolean breadthFirst(IGTreeNode<T> root, IGTreeTask<T> task);
 
 }

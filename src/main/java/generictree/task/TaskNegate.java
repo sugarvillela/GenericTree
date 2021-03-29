@@ -3,10 +3,10 @@ package generictree.task;
 import generictree.iface.IGTreeNode;
 import generictree.iface.IGTreeTask;
 
-public class TreeTaskNegate<T> implements IGTreeTask<T> {
+public class TaskNegate<T> implements IGTreeTask<T> {
     private final char negateSymbol;
 
-    public TreeTaskNegate(char negateSymbol) {
+    public TaskNegate(char negateSymbol) {
         this.negateSymbol = negateSymbol;
     }
 

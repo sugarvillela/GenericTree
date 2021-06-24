@@ -21,8 +21,11 @@ public abstract class GTreeNodeBase<T> implements IGTreeNode<T> {
         children = new ArrayList<>();
     }
 
+    // implementations return node of same type
+    protected abstract IGTreeNode <T> newImplTypeNode();
+
     @Override
-    public String identifier() {
+    public String getIdentifier() {
         return identifier;
     }
 
@@ -52,7 +55,7 @@ public abstract class GTreeNodeBase<T> implements IGTreeNode<T> {
     }
 
     @Override
-    public int level() {
+    public int getLevel() {
         return level;
     }
 
@@ -62,8 +65,13 @@ public abstract class GTreeNodeBase<T> implements IGTreeNode<T> {
     }
 
     @Override
-    public IGTreeNode<T> parent() {
+    public IGTreeNode<T> getParent() {
         return parent;
+    }
+
+    @Override
+    public boolean isRoot() {
+        return parent == null;
     }
 
     @Override
@@ -76,6 +84,21 @@ public abstract class GTreeNodeBase<T> implements IGTreeNode<T> {
         return children;
     }
 
+    @Override
+    public IGTreeNode <T> addChild(IGTreeNode<T> child) {
+        child.setParent(this);
+        child.setLevel(level + 1);
+        children.add(child);
+        return child;
+    }
+
+    @Override
+    public IGTreeNode<T> addChild(String identifier, T payload) {
+        IGTreeNode<T> child = this.newImplTypeNode();
+        child.setIdentifier(identifier);
+        child.setPayload(payload);
+        return this.addChild(child);
+    }
 
     @Override
     public void setOp(char op) {
@@ -83,7 +106,7 @@ public abstract class GTreeNodeBase<T> implements IGTreeNode<T> {
     }
 
     @Override
-    public char op() {
+    public char getOp() {
         throw new IllegalStateException("Not implemented: use ParseTreeNode");
     }
 
@@ -93,7 +116,7 @@ public abstract class GTreeNodeBase<T> implements IGTreeNode<T> {
     }
 
     @Override
-    public boolean negated() {
+    public boolean isNegated() {
         throw new IllegalStateException("Not implemented: use ParseTreeNode");
     }
 
@@ -103,7 +126,7 @@ public abstract class GTreeNodeBase<T> implements IGTreeNode<T> {
     }
 
     @Override
-    public boolean wrapped() {
+    public boolean isWrapped() {
         throw new IllegalStateException("Not implemented: use ParseTreeNode");
     }
 }

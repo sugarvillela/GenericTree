@@ -14,12 +14,17 @@ public class ParseTreeNode<T> extends GTreeNodeBase<T> {
     public ParseTreeNode(){}
 
     @Override
+    protected IGTreeNode<T> newImplTypeNode() {
+        return new ParseTreeNode<>();
+    }
+
+    @Override
     public void setOp(char op) {
         this.op = op;
     }
 
     @Override
-    public char op() {
+    public char getOp() {
         return op;
     }
 
@@ -29,7 +34,7 @@ public class ParseTreeNode<T> extends GTreeNodeBase<T> {
     }
 
     @Override
-    public boolean negated() {
+    public boolean isNegated() {
         return negated;
     }
 
@@ -39,24 +44,11 @@ public class ParseTreeNode<T> extends GTreeNodeBase<T> {
     }
 
     @Override
-    public boolean wrapped() {
+    public boolean isWrapped() {
         return wrapped;
     }
 
-    @Override
-    public void addChild(IGTreeNode<T> child) {
-        child.setParent(this);
-        child.setLevel(level + 1);
-        children.add(child);
-    }
 
-    @Override
-    public void addChild(String identifier, T payload) {
-        IGTreeNode<T> child = new ParseTreeNode<>();
-        child.setIdentifier(identifier);
-        child.setPayload(payload);
-        this.addChild(child);
-    }
 
 
     @Override
@@ -90,14 +82,14 @@ public class ParseTreeNode<T> extends GTreeNodeBase<T> {
 
     private String friendlyParentInfoString(){
         if(parent != null){
-            if(parent.parent() == null){
+            if(parent.getParent() == null){
                 return "root";
             }
-            if(parent.identifier() != null && !parent.identifier().isEmpty()){
-                return parent.identifier();
+            if(parent.getIdentifier() != null && !parent.getIdentifier().isEmpty()){
+                return parent.getIdentifier();
             }
-            if(parent.op() != '\0'){
-                return String.valueOf(parent.op());
+            if(parent.getOp() != '\0'){
+                return String.valueOf(parent.getOp());
             }
         }
         return NULL_STRING;

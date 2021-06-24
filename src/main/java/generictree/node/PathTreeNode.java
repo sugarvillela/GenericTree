@@ -9,18 +9,8 @@ public class PathTreeNode<T> extends GTreeNodeBase<T> {
     private static final String CSV_FORMAT = "%d,%d,%d,%s,%s";
 
     @Override
-    public void addChild(IGTreeNode<T> child) {
-        child.setParent(this);
-        child.setLevel(level + 1);
-        children.add(child);
-    }
-
-    @Override
-    public void addChild(String identifier, T payload) {
-        IGTreeNode<T> child = new PathTreeNode<>();
-        child.setIdentifier(identifier);
-        child.setPayload(payload);
-        this.addChild(child);
+    protected IGTreeNode<T> newImplTypeNode() {
+        return new PathTreeNode<>();
     }
 
     @Override
@@ -50,11 +40,11 @@ public class PathTreeNode<T> extends GTreeNodeBase<T> {
 
     private String friendlyParentInfoString(){
         if(parent != null){
-            if(parent.parent() == null){
+            if(parent.getParent() == null){
                 return "root";
             }
-            if(parent.identifier() != null && !parent.identifier().isEmpty()){
-                return parent.identifier();
+            if(parent.getIdentifier() != null && !parent.getIdentifier().isEmpty()){
+                return parent.getIdentifier();
             }
         }
         return NULL_STRING;

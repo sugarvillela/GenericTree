@@ -19,5 +19,6 @@ dependencies {
     implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
     runtime "mysql:mysql-connector-java:8.0.15"
+    implementation 'org.json:json:20200518'
 
 }

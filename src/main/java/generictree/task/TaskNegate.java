@@ -12,7 +12,7 @@ public class TaskNegate<T> implements IGTreeTask<T> {
 
     @Override
     public boolean doTask(IGTreeNode<T> node) {
-        String identifier = node.identifier();
+        String identifier = node.getIdentifier();
         boolean negated = false;
         for(int i = 0; i < identifier.length(); i++){
             if(identifier.charAt(i) == negateSymbol){
